@@ -1,0 +1,30 @@
+from functions import create_dataframes, create_transformations, compute_img_mean_std
+from HAM10000 import HAM10000
+from torch.utils.data import DataLoader
+from sklearn.model_selection import train_test_split
+from arguments import get_args
+
+args = get_args()
+def load_data():
+
+    # img_dir ="/home/jfayyad/PycharmProjects/Conformal/EDL/HAM/data/HAM10000_img"
+    # main_dir = "/home/jfayyad/PycharmProjects/Conformal/EDL/HAM/data"
+    main_dir = args.data_dir
+
+    norm_mean, norm_std = compute_img_mean_std(main_dir)
+
+    df_train, df_test = create_dataframes(main_dir)
+
+    train_transform, test_transform = create_transformations(224, norm_mean, norm_std)
+
+    training_val_set = HAM10000(df_train, transform=train_transform)
+
+    training_set, val_set = train_test_split(training_val_set, test_size=0.15)
+
+    train_loader = DataLoader(training_set, batch_size=50, shuffle=True, num_workers=8)
+    val_loader = DataLoader(val_set, batch_size=50, shuffle=True, num_workers=8)
+
+    testing_set = HAM10000(df_test, transform=test_transform)
+    test_loader = DataLoader(testing_set, batch_size=50, shuffle=False, num_workers=8)
+
+    return train_loader, val_loader, test_loader
