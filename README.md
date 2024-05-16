@@ -13,7 +13,7 @@
 To configure the environment, see the `requirements.txt` file. You can install the necessary dependencies with the following command:
 ```bash
 pip install -r requirements.txt
-
+```
 # Datasets
 1) [HAM10000 (HAM) dataset](https://www.nature.com/articles/sdata2018161)
 2) [Dermofit (DMF) dataset](https://licensing.edinburgh-innovations.ed.ac.uk/product/dermofit-image-library)
